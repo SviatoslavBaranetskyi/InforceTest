@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Employee
+from .models import Employee, Vote
 
 
 class SignUpSerializer(serializers.ModelSerializer):
@@ -44,3 +44,9 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
         fields = ['id', 'first_name', 'last_name', 'email', 'employee_id', 'department']
+
+
+class VoteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vote
+        fields = '__all__'

@@ -1,15 +1,17 @@
-from rest_framework.generics import RetrieveUpdateDestroyAPIView
+from rest_framework import generics
+from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth import authenticate
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from django.contrib.auth.models import User
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
-from django.contrib.auth import authenticate
-from django.contrib.auth.models import User
-from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework import serializers
+from django.utils import timezone
 
-from .models import Employee
-from .serializers import SignUpSerializer, ProfileSerializer
+from .models import Employee, Vote
+from .serializers import SignUpSerializer, ProfileSerializer, VoteSerializer
 from .permissions import IsOwner
 
 
@@ -47,7 +49,7 @@ class SignInView(APIView):
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
-class ProfileView(RetrieveUpdateDestroyAPIView):
+class ProfileView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Employee.objects.all()
     serializer_class = ProfileSerializer
     authentication_classes = (JWTAuthentication,)
@@ -59,3 +61,19 @@ class ProfileView(RetrieveUpdateDestroyAPIView):
         self.perform_destroy(instance)
         return Response({"message": "Profile deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
 
+
+class VoteCreateView(generics.CreateAPIView):
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = (IsAuthenticated, IsOwner)
+    queryset = Vote.objects.all()
+    serializer_class = VoteSerializer
+
+    def perform_create(self, serializer):
+        employee = Employee.objects.get(user=self.request.user)
+
+        today = timezone.now().date()
+        existing_vote_today = Vote.objects.filter(employee=employee, timestamp__date=today).exists()
+        if existing_vote_today:
+            raise serializers.ValidationError("You have already voted today. You can only vote once per day.")
+
+        serializer.save(employee=employee)
