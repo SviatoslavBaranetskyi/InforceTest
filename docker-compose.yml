@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./lunch_decision:/lunch_decision
+
+  db:
+      image: postgres:14.1-alpine
+      restart: unless-stopped
+      environment:
+        - POSTGRES_DB=lunch_decision
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres
+      ports:
+        - '5432:5432'
+      volumes:
+        - db-data:/var/lib/postgresql/data
+volumes:
+  db-data:
+    driver: local
