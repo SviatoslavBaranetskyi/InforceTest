@@ -1,5 +1,6 @@
 from rest_framework import generics
 from rest_framework import status
+from rest_framework.exceptions import NotFound
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -15,7 +16,17 @@ from .serializers import SignUpSerializer, ProfileSerializer, VoteSerializer
 from .permissions import IsOwner
 
 
-class SignUpView(APIView):
+class VersionedAPIView(APIView):
+    def dispatch(self, request, *args, **kwargs):
+        version = request.headers.get('X-App-Version', None)
+
+        if version == '2':
+            raise NotFound("Version 2 is not supported yet")
+
+        return super().dispatch(request, *args, **kwargs)
+
+
+class SignUpView(VersionedAPIView, APIView):
     def post(self, request):
         serializer = SignUpSerializer(data=request.data)
 
@@ -31,7 +42,7 @@ class SignUpView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class SignInView(APIView):
+class SignInView(VersionedAPIView, APIView):
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
@@ -49,7 +60,7 @@ class SignInView(APIView):
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
-class ProfileView(generics.RetrieveUpdateDestroyAPIView):
+class ProfileView(VersionedAPIView, generics.RetrieveUpdateDestroyAPIView):
     queryset = Employee.objects.all()
     serializer_class = ProfileSerializer
     authentication_classes = (JWTAuthentication,)
@@ -62,7 +73,7 @@ class ProfileView(generics.RetrieveUpdateDestroyAPIView):
         return Response({"message": "Profile deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
 
 
-class VoteCreateView(generics.CreateAPIView):
+class VoteCreateView(VersionedAPIView, generics.CreateAPIView):
     authentication_classes = (JWTAuthentication,)
     permission_classes = (IsAuthenticated, IsOwner)
     queryset = Vote.objects.all()

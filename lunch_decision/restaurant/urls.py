@@ -8,6 +8,6 @@ urlpatterns = [
     path('<int:restaurant_id>/menus/<int:pk>/', MenuRetrieveUpdateDestroy.as_view(), name='menu-detail'),
     path('<int:restaurant_id>/menus/<int:menu_id>/items/', ItemListCreate.as_view(), name='item-list'),
     path('<int:restaurant_id>/menus/<int:menu_id>/items/<int:pk>/', ItemRetrieveUpdateDestroy.as_view(), name='item-detail'),
-    path('current-day-menu/', CurrentDayMenuView.as_view(), name='current-day-menu'),
-    path('voting-results/', VotingResultsView.as_view(), name='voting-results'),
+    path('current_day_menu/', CurrentDayMenuView.as_view(), name='current-day-menu'),
+    path('voting_results/', VotingResultsView.as_view(), name='voting-results'),
 ]

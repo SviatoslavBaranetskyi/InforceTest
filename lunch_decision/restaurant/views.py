@@ -2,43 +2,55 @@ from datetime import date
 from django.utils import timezone
 from django.db.models import Count
 from rest_framework import generics
+from rest_framework.exceptions import NotFound
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import status
 
 from .models import Restaurant, Menu, Item
 from .serializers import RestaurantSerializer, MenuSerializer, ItemSerializer
 from employee.models import Vote, Employee
 
 
-class RestaurantListCreate(generics.ListCreateAPIView):
+class VersionedAPIView(APIView):
+    def dispatch(self, request, *args, **kwargs):
+        version = request.headers.get('X-App-Version', None)
+
+        if version == '2':
+            raise NotFound("Version 2 is not supported yet")
+
+        return super().dispatch(request, *args, **kwargs)
+
+
+class RestaurantListCreate(VersionedAPIView, generics.ListCreateAPIView):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer
 
 
-class RestaurantRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+class RestaurantRetrieveUpdateDestroy(VersionedAPIView, generics.RetrieveUpdateDestroyAPIView):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer
 
 
-class MenuListCreate(generics.ListCreateAPIView):
+class MenuListCreate(VersionedAPIView, generics.ListCreateAPIView):
     queryset = Menu.objects.all()
     serializer_class = MenuSerializer
 
 
-class MenuRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+class MenuRetrieveUpdateDestroy(VersionedAPIView, generics.RetrieveUpdateDestroyAPIView):
     serializer_class = MenuSerializer
 
     def get_queryset(self):
-        restaurant_id = self.kwargs['restaurant_id']  # Получаем id ресторана из URL
+        restaurant_id = self.kwargs['restaurant_id']
         return Menu.objects.filter(restaurant_id=restaurant_id)
 
 
-class ItemListCreate(generics.ListCreateAPIView):
+class ItemListCreate(VersionedAPIView, generics.ListCreateAPIView):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
 
 
-class ItemRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+class ItemRetrieveUpdateDestroy(VersionedAPIView, generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ItemSerializer
 
     def get_queryset(self):
@@ -47,7 +59,7 @@ class ItemRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
         return Item.objects.filter(menu__restaurant_id=restaurant_id, menu__id=menu_id)
 
 
-class CurrentDayMenuView(generics.ListAPIView):
+class CurrentDayMenuView(VersionedAPIView, generics.ListAPIView):
     serializer_class = MenuSerializer
 
     def get_queryset(self):
@@ -61,7 +73,7 @@ class CurrentDayMenuView(generics.ListAPIView):
             return Menu.objects.none()
 
 
-class VotingResultsView(APIView):
+class VotingResultsView(VersionedAPIView, APIView):
     def get(self, request):
         today = timezone.now().date()
         results = Vote.objects.filter(timestamp__date=today).values('menu_id').annotate(
@@ -75,7 +87,6 @@ class VotingResultsView(APIView):
             employees_voted_ids = list(
                 Vote.objects.filter(menu_id=menu_id, timestamp__date=today).values_list('employee', flat=True))
 
-            # Отримуємо ім'я та прізвище для кожного працівника
             employees_voted_names = []
             for employee_id in employees_voted_ids:
                 employee = Employee.objects.get(id=employee_id)
