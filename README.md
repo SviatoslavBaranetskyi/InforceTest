@@ -45,6 +45,15 @@ Content-Type: application/json<br>
 ## Restaurants
 - Retrieve a list of all restaurants<br>
 GET /api/restaurants/
+- Create a restaurant<br>
+POST /api/restaurants/<br>
+Content-Type: application/json<br>
+{<br>
+&nbsp;&nbsp;&nbsp;"name": "Name",<br>
+&nbsp;&nbsp;&nbsp;"address": "Street, City, Code",<br>
+&nbsp;&nbsp;&nbsp;"phone_number": "+3801235489987",<br>
+&nbsp;&nbsp;&nbsp;"description": "description"<br>
+}
 - Retrieve a specific restaurant by its primary key<br>
 GET /api/restaurants/&lt;int:pk&gt;/
 - Update restaurant info<br>
@@ -66,6 +75,14 @@ Content-Type: application/json<br>
 DELETE /api/restaurants/&lt;int:pk&gt;/<br>
 - Retrieve a list of all menus<br>
 GET /api/restaurants/&lt;int:pk&gt;/menus/
+- Create a menu<br>
+POST /api/restaurants/<int:pk>/menus/<br>
+Content-Type: application/json<br>
+{<br>
+&nbsp;&nbsp;&nbsp;"date": "2024-05-13",<br>
+&nbsp;&nbsp;&nbsp;"description": "description",<br>
+&nbsp;&nbsp;&nbsp;"restaurant": 1<br>
+}
 - Retrieve a specific menu by its primary key<br>
 GET /api/restaurants/&lt;int:restaurant_id&gt;/menus/&lt;int:pk&gt;/
 - Update menu info<br>
@@ -86,6 +103,15 @@ Content-Type: application/json<br>
 DELETE /api/restaurants/&lt;int:restaurant_id&gt;/menus/&lt;int:pk&gt;/
 - Retrieve a list of all items<br>
 GET /api/restaurants/&lt;int:restaurant_id&gt;/menus/&lt;int:menu_id&gt;/items/
+- Create item<br>
+POST /api/restaurants/<int:restaurant_id>/menus/<int:menu_id>/items/<br>
+Content-Type: application/json<br>
+{<br>
+&nbsp;&nbsp;&nbsp;"name": "name",<br>
+&nbsp;&nbsp;&nbsp;"price": "210.00",<br>
+&nbsp;&nbsp;&nbsp;"description": "description",<br>
+&nbsp;&nbsp;&nbsp;"menu": 1<br>
+}
 - Retrieve a specific item by its primary key<br>
 GET /api/restaurants/&lt;int:restaurant_id&gt;/menus/&lt;int:menu_id&gt;/items/&lt;int:pk&gt;/
 - Update item info<br>
