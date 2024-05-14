@@ -74,19 +74,19 @@ Content-Type: application/json<br>
 - Delete restaurant<br>
 DELETE /api/restaurants/&lt;int:pk&gt;/<br>
 - Retrieve a list of all menus<br>
-GET /api/restaurants/&lt;int:pk&gt;/menus/
+
+GET /api/restaurants/&lt;int:restaurant_id&gt;/menus/
 - Create a menu<br>
-POST /api/restaurants/<int:pk>/menus/<br>
+POST /api/restaurants/&lt;int:restaurant_id&gt;/menus/<br>
 Content-Type: application/json<br>
 {<br>
 &nbsp;&nbsp;&nbsp;"date": "2024-05-13",<br>
 &nbsp;&nbsp;&nbsp;"description": "description",<br>
-&nbsp;&nbsp;&nbsp;"restaurant": 1<br>
 }
 - Retrieve a specific menu by its primary key<br>
-GET /api/restaurants/&lt;int:restaurant_id&gt;/menus/&lt;int:pk&gt;/
+GET /api/restaurants/menus/&lt;int:pk&gt;/
 - Update menu info<br>
-PUT /api/restaurants/&lt;int:restaurant_id&gt;/menus/&lt;int:pk&gt;/<br>
+PUT /api/restaurants/menus/&lt;int:pk&gt;/<br>
 Content-Type: application/json<br>
 {<br>
 &nbsp;&nbsp;&nbsp;"date": "2024-05-13",<br>
@@ -94,28 +94,28 @@ Content-Type: application/json<br>
 &nbsp;&nbsp;&nbsp;"restaurant": 1<br>
 }
 - Partial update menu info<br>
-PATCH /api/restaurants/&lt;int:restaurant_id&gt;/menus/&lt;int:pk&gt;/<br>
+PATCH /api/restaurants/menus/&lt;int:pk&gt;/<br>
 Content-Type: application/json<br>
 {<br>
 &nbsp;&nbsp;&nbsp;"description": "description",<br>
 }
 - Delete menu<br>
-DELETE /api/restaurants/&lt;int:restaurant_id&gt;/menus/&lt;int:pk&gt;/
+DELETE /api/restaurants/menus/&lt;int:pk&gt;/
+
 - Retrieve a list of all items<br>
-GET /api/restaurants/&lt;int:restaurant_id&gt;/menus/&lt;int:menu_id&gt;/items/
+GET /api/restaurants/menus/&lt;int:menu_id&gt;/items/
 - Create item<br>
-POST /api/restaurants/<int:restaurant_id>/menus/<int:menu_id>/items/<br>
+POST /api/restaurants/menus/&lt;int:menu_id&gt;/items/<br>
 Content-Type: application/json<br>
 {<br>
 &nbsp;&nbsp;&nbsp;"name": "name",<br>
 &nbsp;&nbsp;&nbsp;"price": "210.00",<br>
 &nbsp;&nbsp;&nbsp;"description": "description",<br>
-&nbsp;&nbsp;&nbsp;"menu": 1<br>
 }
 - Retrieve a specific item by its primary key<br>
-GET /api/restaurants/&lt;int:restaurant_id&gt;/menus/&lt;int:menu_id&gt;/items/&lt;int:pk&gt;/
+GET /api/restaurants/menus/items/&lt;int:pk&gt;/
 - Update item info<br>
-PUT /api/restaurants/&lt;int:restaurant_id&gt;/menus/&lt;int:menu_id&gt;/items/&lt;int:pk&gt;/<br>
+PUT /api/restaurants/menus/items/&lt;int:pk&gt;/<br>
 Content-Type: application/json<br>
 {<br>
 &nbsp;&nbsp;&nbsp;"name": "name",<br>
@@ -124,14 +124,15 @@ Content-Type: application/json<br>
 &nbsp;&nbsp;&nbsp;"menu": 1<br>
 }
 - Partial update item info<br>
-PATCH /api/restaurants/&lt;int:restaurant_id&gt;/menus/&lt;int:menu_id&gt;/items/&lt;int:pk&gt;/<br>
+PATCH /api/restaurants/menus/items/&lt;int:pk&gt;/<br>
 Content-Type: application/json<br>
 {<br>
 &nbsp;&nbsp;&nbsp;"description": "description",<br>
 }
 - Delete item<br>
-DELETE /api/restaurants/&lt;int:restaurant_id&gt;/menus/&lt;int:menu_id&gt;/items/&lt;int:pk&gt;/
+DELETE /api/restaurants/menus/items/&lt;int:pk&gt;/
 - Retrieve current day menu<br>
+
 GET /api/restaurants/current_day_menu/
 - Retrieve menu voting results<br>
 GET /api/restaurants/voting_results/
