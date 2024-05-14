@@ -10,10 +10,6 @@ The project aims to streamline the lunch decision process for employees within t
 - Docker
 - PyTests
 # Starting a project
-- Build the Docker image: 
-```
-docker-compose build
-```
 - Run the Docker container:
 ```
 docker compose up -d
