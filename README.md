@@ -73,8 +73,8 @@ Content-Type: application/json<br>
 }
 - Delete restaurant<br>
 DELETE /api/restaurants/&lt;int:pk&gt;/<br>
+--------------------------------------------
 - Retrieve a list of all menus<br>
-
 GET /api/restaurants/&lt;int:restaurant_id&gt;/menus/
 - Create a menu<br>
 POST /api/restaurants/&lt;int:restaurant_id&gt;/menus/<br>
@@ -101,7 +101,7 @@ Content-Type: application/json<br>
 }
 - Delete menu<br>
 DELETE /api/restaurants/menus/&lt;int:pk&gt;/
-
+--------------------------------------------
 - Retrieve a list of all items<br>
 GET /api/restaurants/menus/&lt;int:menu_id&gt;/items/
 - Create item<br>
@@ -131,8 +131,8 @@ Content-Type: application/json<br>
 }
 - Delete item<br>
 DELETE /api/restaurants/menus/items/&lt;int:pk&gt;/
+--------------------------------------------
 - Retrieve current day menu<br>
-
 GET /api/restaurants/current_day_menu/
 - Retrieve menu voting results<br>
 GET /api/restaurants/voting_results/
