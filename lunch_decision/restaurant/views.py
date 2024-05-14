@@ -32,31 +32,53 @@ class RestaurantRetrieveUpdateDestroy(VersionedAPIView, generics.RetrieveUpdateD
     serializer_class = RestaurantSerializer
 
 
-class MenuListCreate(VersionedAPIView, generics.ListCreateAPIView):
+class MenuListCreate(VersionedAPIView):
+    def get(self, request, restaurant_id):
+        menus = Menu.objects.filter(id=restaurant_id)
+
+        serializer = MenuSerializer(menus, many=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, restaurant_id):
+        menus_data = request.data
+        menus_serializer = MenuSerializer(data=menus_data)
+
+        if menus_serializer.is_valid():
+            menus_serializer.save(restaurant_id=restaurant_id)
+            return Response(menus_serializer.data, status=status.HTTP_201_CREATED)
+        return Response(menus_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class MenuRetrieveUpdateDestroy(VersionedAPIView, generics.RetrieveUpdateDestroyAPIView):
     queryset = Menu.objects.all()
     serializer_class = MenuSerializer
 
 
-class MenuRetrieveUpdateDestroy(VersionedAPIView, generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = MenuSerializer
+class ItemListCreate(VersionedAPIView):
+    def get(self, request, menu_id):
+        items = Item.objects.filter(menu_id=menu_id)
 
-    def get_queryset(self):
-        restaurant_id = self.kwargs['restaurant_id']
-        return Menu.objects.filter(restaurant_id=restaurant_id)
+        serializer = ItemSerializer(items, many=True)
 
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-class ItemListCreate(VersionedAPIView, generics.ListCreateAPIView):
-    queryset = Item.objects.all()
-    serializer_class = ItemSerializer
+    def post(self, request, menu_id):
+        # Remove all old items for this menu
+        Item.objects.filter(menu_id=menu_id).delete()
+
+        items_data = request.data
+        items_serializer = ItemSerializer(data=items_data, many=True)
+
+        if items_serializer.is_valid():
+            items_serializer.save(menu_id=menu_id)
+            return Response(items_serializer.data, status=status.HTTP_201_CREATED)
+        return Response(items_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ItemRetrieveUpdateDestroy(VersionedAPIView, generics.RetrieveUpdateDestroyAPIView):
+    queryset = Item.objects.all()
     serializer_class = ItemSerializer
-
-    def get_queryset(self):
-        restaurant_id = self.kwargs['restaurant_id']
-        menu_id = self.kwargs['menu_id']
-        return Item.objects.filter(menu__restaurant_id=restaurant_id, menu__id=menu_id)
 
 
 class CurrentDayMenuView(VersionedAPIView, generics.ListAPIView):
