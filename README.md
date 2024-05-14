@@ -42,6 +42,7 @@ Content-Type: application/json<br>
 }
 - Update access token<br>
 POST api/token/refresh/<br>
+Content-Type: application/json<br>
 {<br>
 &nbsp;&nbsp;&nbsp;"refresh": "token_refresh"<br>
 }<br>
@@ -51,7 +52,7 @@ GET /api/restaurants/
 - Retrieve a specific restaurant by its primary key<br>
 GET /api/restaurants/<int:pk>/
 - Update restaurant info<br>
-PUT /api/restaurants/<int:pk>/
+PUT /api/restaurants/<int:pk>/<br>
 Content-Type: application/json<br>
 {<br>
 &nbsp;&nbsp;&nbsp;"name": "Name",<br>
@@ -66,13 +67,13 @@ Content-Type: application/json<br>
 &nbsp;&nbsp;&nbsp;"name": "Name",<br>
 }
 - Delete restaurant<br>
-DELETE /api/restaurants/<int:pk>/
+DELETE /api/restaurants/<int:pk>/<br>
 - Retrieve a list of all menus<br>
 GET /api/restaurants/<int:pk>/menus/
 - Retrieve a specific menu by its primary key<br>
 GET /api/restaurants/<int:restaurant_id>/menus/<int:pk>/
 - Update menu info<br>
-PUT /api/restaurants/<int:restaurant_id>/menus/<int:pk>/
+PUT /api/restaurants/<int:restaurant_id>/menus/<int:pk>/<br>
 Content-Type: application/json<br>
 {<br>
 &nbsp;&nbsp;&nbsp;"date": "2024-05-13",<br>
@@ -80,7 +81,7 @@ Content-Type: application/json<br>
 &nbsp;&nbsp;&nbsp;"restaurant": 1<br>
 }
 - Partial update menu info<br>
-PATCH /api/restaurants/<int:restaurant_id>/menus/<int:pk>/
+PATCH /api/restaurants/<int:restaurant_id>/menus/<int:pk>/<br>
 Content-Type: application/json<br>
 {<br>
 &nbsp;&nbsp;&nbsp;"description": "description",<br>
@@ -92,7 +93,7 @@ GET /api/restaurants/<int:restaurant_id>/menus/<int:menu_id>/items/
 - Retrieve a specific item by its primary key<br>
 GET /api/restaurants/<int:restaurant_id>/menus/<int:menu_id>/items/<int:pk>/
 - Update item info<br>
-PUT /api/restaurants/<int:restaurant_id>/menus/<int:menu_id>/items/<int:pk>/
+PUT /api/restaurants/<int:restaurant_id>/menus/<int:menu_id>/items/<int:pk>/<br>
 Content-Type: application/json<br>
 {<br>
 &nbsp;&nbsp;&nbsp;"name": "name",<br>
@@ -101,7 +102,7 @@ Content-Type: application/json<br>
 &nbsp;&nbsp;&nbsp;"menu": 1<br>
 }
 - Partial update item info<br>
-PATCH /api/restaurants/<int:restaurant_id>/menus/<int:menu_id>/items/<int:pk>/
+PATCH /api/restaurants/<int:restaurant_id>/menus/<int:menu_id>/items/<int:pk>/<br>
 Content-Type: application/json<br>
 {<br>
 &nbsp;&nbsp;&nbsp;"description": "description",<br>
