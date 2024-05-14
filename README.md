@@ -16,7 +16,7 @@ docker-compose build
 ```
 - Run the Docker container:
 ```
-docker compose -f docker-compose.yml up
+docker compose up -d
 ```
 # API Endpoints:
 ## Requests that do not require a token:
@@ -41,7 +41,7 @@ Content-Type: application/json<br>
 &nbsp;&nbsp;&nbsp;"password": "password"<br>
 }
 - Update access token<br>
-POST api/token/refresh/<br>
+POST api/auth/token/refresh/<br>
 Content-Type: application/json<br>
 {<br>
 &nbsp;&nbsp;&nbsp;"refresh": "token_refresh"<br>
@@ -50,9 +50,9 @@ Content-Type: application/json<br>
 - Retrieve a list of all restaurants<br>
 GET /api/restaurants/
 - Retrieve a specific restaurant by its primary key<br>
-GET /api/restaurants/<int:pk>/
+GET /api/restaurants/&lt;int:pk&gt;/
 - Update restaurant info<br>
-PUT /api/restaurants/<int:pk>/<br>
+PUT /api/restaurants/&lt;int:pk&gt;/<br>
 Content-Type: application/json<br>
 {<br>
 &nbsp;&nbsp;&nbsp;"name": "Name",<br>
@@ -61,19 +61,19 @@ Content-Type: application/json<br>
 &nbsp;&nbsp;&nbsp;"description": "description"<br>
 }
 - Partial update restaurant info<br>
-PATCH /api/restaurants/<int:pk>/<br>
+PATCH /api/restaurants/&lt;int:pk&gt;/<br>
 Content-Type: application/json<br>
 {<br>
 &nbsp;&nbsp;&nbsp;"name": "Name",<br>
 }
 - Delete restaurant<br>
-DELETE /api/restaurants/<int:pk>/<br>
+DELETE /api/restaurants/&lt;int:pk&gt;/<br>
 - Retrieve a list of all menus<br>
-GET /api/restaurants/<int:pk>/menus/
+GET /api/restaurants/&lt;int:pk&gt;/menus/
 - Retrieve a specific menu by its primary key<br>
-GET /api/restaurants/<int:restaurant_id>/menus/<int:pk>/
+GET /api/restaurants/&lt;int:restaurant_id&gt;/menus/&lt;int:pk&gt;/
 - Update menu info<br>
-PUT /api/restaurants/<int:restaurant_id>/menus/<int:pk>/<br>
+PUT /api/restaurants/&lt;int:restaurant_id&gt;/menus/&lt;int:pk&gt;/<br>
 Content-Type: application/json<br>
 {<br>
 &nbsp;&nbsp;&nbsp;"date": "2024-05-13",<br>
@@ -81,19 +81,19 @@ Content-Type: application/json<br>
 &nbsp;&nbsp;&nbsp;"restaurant": 1<br>
 }
 - Partial update menu info<br>
-PATCH /api/restaurants/<int:restaurant_id>/menus/<int:pk>/<br>
+PATCH /api/restaurants/&lt;int:restaurant_id&gt;/menus/&lt;int:pk&gt;/<br>
 Content-Type: application/json<br>
 {<br>
 &nbsp;&nbsp;&nbsp;"description": "description",<br>
 }
 - Delete menu<br>
-DELETE /api/restaurants/<int:restaurant_id>/menus/<int:pk>/
+DELETE /api/restaurants/&lt;int:restaurant_id&gt;/menus/&lt;int:pk&gt;/
 - Retrieve a list of all items<br>
-GET /api/restaurants/<int:restaurant_id>/menus/<int:menu_id>/items/
+GET /api/restaurants/&lt;int:restaurant_id&gt;/menus/&lt;int:menu_id&gt;/items/
 - Retrieve a specific item by its primary key<br>
-GET /api/restaurants/<int:restaurant_id>/menus/<int:menu_id>/items/<int:pk>/
+GET /api/restaurants/&lt;int:restaurant_id&gt;/menus/&lt;int:menu_id&gt;/items/&lt;int:pk&gt;/
 - Update item info<br>
-PUT /api/restaurants/<int:restaurant_id>/menus/<int:menu_id>/items/<int:pk>/<br>
+PUT /api/restaurants/&lt;int:restaurant_id&gt;/menus/&lt;int:menu_id&gt;/items/&lt;int:pk&gt;/<br>
 Content-Type: application/json<br>
 {<br>
 &nbsp;&nbsp;&nbsp;"name": "name",<br>
@@ -102,13 +102,13 @@ Content-Type: application/json<br>
 &nbsp;&nbsp;&nbsp;"menu": 1<br>
 }
 - Partial update item info<br>
-PATCH /api/restaurants/<int:restaurant_id>/menus/<int:menu_id>/items/<int:pk>/<br>
+PATCH /api/restaurants/&lt;int:restaurant_id&gt;/menus/&lt;int:menu_id&gt;/items/&lt;int:pk&gt;/<br>
 Content-Type: application/json<br>
 {<br>
 &nbsp;&nbsp;&nbsp;"description": "description",<br>
 }
 - Delete item<br>
-DELETE /api/restaurants/<int:restaurant_id>/menus/<int:menu_id>/items/<int:pk>/
+DELETE /api/restaurants/&lt;int:restaurant_id&gt;/menus/&lt;int:menu_id&gt;/items/&lt;int:pk&gt;/
 - Retrieve current day menu<br>
 GET /api/restaurants/current_day_menu/
 - Retrieve menu voting results<br>
